@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+   <video id="video" style="display: none;"></video>
+   <button id="button">play video</button>
+   <script>
+   if (Hls.isSupported()) {
+       let video = document.getElementById('video');
+       let hls = new Hls();
+       // bind them together
+       hls.attachMedia(video);
+       hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+         console.log("video and hls.js are now bound together !");
+         hls.loadSource("https://liveout.catenoid.net/live-02-shinsegaetvshopping/shinsegaetvshopping/playlist.m3u8");
+         hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+             console.log(data)
+           console.log("manifest loaded, found " + data.levels.length + " quality level");
+           let fragments = data.levels[0].details.fragments
+           let play_time = 0
+           for(let i in fragments) {
+               console.log(fragments[i]);
+               play_time += fragments[i].duration
+            }
+            console.log("play_time : ",play_time)  
+            play_time = Math.floor((play_time*1000)+1000)
+            console.log(play_time)        
+           button.addEventListener('click', function() {
+               video.style.display="block"
+               video.muted = false;
+               video.play();
+               setTimeout(function(){console.log("end")}, play_time);
+            });
+        })
+    })
+    }
+   </script>   
+</body>
+</html>
