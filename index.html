@@ -1,34 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
-</head>
-<body>
-	
-   <video id="video"></video>
-<script>
-  if(Hls.isSupported()) {
-    var video = document.getElementById('video');
-    var hls = new Hls();
-    hls.loadSource('https://liveout.catenoid.net/live-02-shinsegaetvshopping/shinsegaetvshopping/playlist.m3u8');
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED,function() {
-      video.play();
-  });
- }
- // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
- // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
- // This is using the built-in support of the plain video element, without using hls.js.
-  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = 'https://liveout.catenoid.net/live-02-shinsegaetvshopping/shinsegaetvshopping/playlist.m3u8';
-    video.addEventListener('canplay',function() {
-      video.play();
-    });
-  }
-</script>
-</body>
+<html>
+  <head>
+    <title>VHS de HLS</title>
+    <link href="https://vjs.zencdn.net/7.4.1/video-js.css" rel="stylesheet">
+  </head>
+  <body>
+    <video-js id=example-video width=1280 height=720
+              class="vjs-default-skin" controls>
+      <source
+         src="https://liveout.catenoid.net/live-02-shinsegaetvshopping/shinsegaetvshopping/playlist.m3u8"
+         type="application/x-mpegURL">
+    </video-js>
+    <script src="https://vjs.zencdn.net/7.4.1/video.js"></script>
+    <script>
+      var player = videojs('example-video');
+    </script>
+  </body>
 </html>
